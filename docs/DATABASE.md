@@ -1,4 +1,37 @@
-## 🔹 1️⃣ SQL BASICS
+# Database Guide - SQL & NoSQL
+
+## Table of Contents
+
+### 📘 SQL (Relational Databases)
+1. [SQL Basics](#1️⃣-sql)
+2. [Joins](#🔹-2️⃣-joins)
+3. [Aggregate Functions & Grouping](#🔹-3️⃣-aggregate-functions--grouping)
+4. [Subqueries & CTEs](#🔹-4️⃣-subqueries--ctes)
+5. [Indexes & Performance](#🔹-5️⃣-indexes--performance)
+6. [Constraints & Keys](#🔹-6️⃣-constraints--keys)
+7. [Transactions & ACID](#🔹-7️⃣-transactions--acid)
+8. [Isolation Levels & Locking](#🔹-8️⃣-isolation-levels--locking)
+9. [Functions & Stored Procedures](#🔹-9️⃣-functions--stored-procedures)
+10. [SQL Scenario-Based Questions](#🔹-🔟-sql-scenario-based-questions)
+11. [Normalization & Design](#🔹-1️⃣1️⃣-normalization--design)
+12. [SQL vs NoSQL](#🔹-1️⃣2️⃣-sql-vs-nosql)
+
+### 🍃 MongoDB (NoSQL Database)
+1. [MongoDB Basics](#🔹-1️⃣-mongodb-basics)
+2. [CRUD Operations](#🔹-2️⃣-crud-operations)
+3. [Query Operators](#🔹-3️⃣-query-operators)
+4. [Update Operators](#🔹-4️⃣-update-operators)
+5. [Indexing](#🔹-5️⃣-indexing)
+6. [Aggregation Framework](#🔹-6️⃣-aggregation-framework)
+7. [Data Modeling](#🔹-7️⃣-data-modeling)
+8. [Transactions](#🔹-8️⃣-transactions)
+9. [Replication & Sharding](#🔹-9️⃣-replication--sharding)
+10. [MongoDB Interview Questions](#🔹-🔟-mongodb-interview-questions)
+11. [Best Practices](#🔹-1️⃣1️⃣-best-practices)
+
+---
+
+#1️⃣ SQL
 
 ### What is SQL?
 - **Structured Query Language** - used to communicate with relational databases
@@ -911,3 +944,1195 @@
 8. **Understand ACID**: Transactions are critical for backend roles
 
 Good luck with your interview preparation! 🚀
+
+---
+
+# 🍃 MongoDB (NoSQL Database)
+
+## 🔹 1️⃣ MongoDB Basics
+
+### What is MongoDB?
+
+MongoDB is a **NoSQL document database** that stores data in flexible, JSON-like documents.
+
+> Think of it as storing data in filing cabinets with folders (collections) containing documents (JSON objects) instead of rigid spreadsheet tables.
+
+**Key Features:**
+- **Document-oriented**: Data stored as BSON (Binary JSON) documents
+- **Schema-flexible**: No fixed structure, fields can vary between documents
+- **Scalable**: Built for horizontal scaling (sharding)
+- **High performance**: Fast reads/writes, indexing support
+
+**Real-life analogy:**
+- **SQL** = Filing cabinet with fixed forms (same fields for everyone)
+- **MongoDB** = Filing cabinet with flexible notes (each note can have different information)
+
+---
+
+### Document Structure
+
+Documents are JSON-like objects with field-value pairs.
+
+```javascript
+// A document in MongoDB
+{
+  _id: ObjectId("507f1f77bcf86cd799439011"),
+  name: "John Doe",
+  age: 30,
+  email: "john@example.com",
+  address: {
+    street: "123 Main St",
+    city: "New York"
+  },
+  hobbies: ["reading", "gaming", "coding"]
+}
+```
+
+**Key points:**
+- `_id` is automatically created (unique identifier)
+- Fields can be strings, numbers, arrays, nested objects
+- No need to define schema beforehand
+
+---
+
+### Database, Collection, Document
+
+| MongoDB | SQL Equivalent | Description |
+|---------|----------------|-------------|
+| **Database** | Database | Container for collections |
+| **Collection** | Table | Group of documents |
+| **Document** | Row | Individual record (JSON object) |
+| **Field** | Column | Key-value pair in document |
+
+**Example:**
+```javascript
+// Database: company
+// Collection: employees
+// Document:
+{
+  _id: 1,
+  name: "Alice",
+  department: "Engineering",
+  salary: 80000
+}
+```
+
+---
+
+### BSON vs JSON
+
+| Feature | JSON | BSON |
+|---------|------|------|
+| **Format** | Text | Binary |
+| **Size** | Larger | Smaller |
+| **Speed** | Slower parsing | Faster parsing |
+| **Data types** | Limited (string, number, boolean, null) | Extended (Date, ObjectId, Binary) |
+
+**Why BSON?**
+- Faster to parse and traverse
+- Supports more data types
+- Efficient for storage and network transfer
+
+---
+
+### ObjectId
+
+Unique identifier automatically generated for each document.
+
+```javascript
+ObjectId("507f1f77bcf86cd799439011")
+```
+
+**Structure (12 bytes):**
+- 4 bytes: Timestamp (creation time)
+- 5 bytes: Random value
+- 3 bytes: Incrementing counter
+
+**Benefits:**
+- Globally unique without coordination
+- Contains creation timestamp
+- Sortable by creation time
+
+---
+
+## 🔹 2️⃣ CRUD Operations
+
+### Insert Documents
+
+**Insert One:**
+```javascript
+db.users.insertOne({
+  name: "John Doe",
+  age: 30,
+  email: "john@example.com"
+});
+```
+
+**Insert Many:**
+```javascript
+db.users.insertMany([
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 35 },
+  { name: "Charlie", age: 28 }
+]);
+```
+
+**Real-life analogy:**
+Like adding new files to a folder - each file can have different content.
+
+---
+
+### Find Documents (Query)
+
+**Find All:**
+```javascript
+db.users.find();
+```
+
+**Find with Filter:**
+```javascript
+// Find users older than 25
+db.users.find({ age: { $gt: 25 } });
+
+// Find by exact match
+db.users.find({ name: "John Doe" });
+
+// Find with multiple conditions (AND)
+db.users.find({ age: { $gt: 25 }, city: "New York" });
+```
+
+**Find One:**
+```javascript
+db.users.findOne({ email: "john@example.com" });
+```
+
+**Projection (Select specific fields):**
+```javascript
+// Only return name and age (exclude _id)
+db.users.find({}, { name: 1, age: 1, _id: 0 });
+```
+
+---
+
+### Update Documents
+
+**Update One:**
+```javascript
+db.users.updateOne(
+  { name: "John Doe" },           // Filter
+  { $set: { age: 31 } }           // Update
+);
+```
+
+**Update Many:**
+```javascript
+// Give 10% raise to all employees in Engineering
+db.employees.updateMany(
+  { department: "Engineering" },
+  { $inc: { salary: 0.10 } }
+);
+```
+
+**Replace Document:**
+```javascript
+db.users.replaceOne(
+  { name: "John Doe" },
+  { name: "John Doe", age: 31, email: "newemail@example.com" }
+);
+```
+
+**Upsert (Insert if not exists):**
+```javascript
+db.users.updateOne(
+  { email: "new@example.com" },
+  { $set: { name: "New User", age: 25 } },
+  { upsert: true }  // Insert if not found
+);
+```
+
+---
+
+### Delete Documents
+
+**Delete One:**
+```javascript
+db.users.deleteOne({ name: "John Doe" });
+```
+
+**Delete Many:**
+```javascript
+// Delete all users younger than 18
+db.users.deleteMany({ age: { $lt: 18 } });
+
+// Delete all documents in collection
+db.users.deleteMany({});
+```
+
+---
+
+## 🔹 3️⃣ Query Operators
+
+### Comparison Operators
+
+| Operator | Meaning | Example |
+|----------|---------|---------|
+| `$eq` | Equal to | `{ age: { $eq: 25 } }` |
+| `$ne` | Not equal | `{ age: { $ne: 25 } }` |
+| `$gt` | Greater than | `{ age: { $gt: 25 } }` |
+| `$gte` | Greater than or equal | `{ age: { $gte: 25 } }` |
+| `$lt` | Less than | `{ age: { $lt: 25 } }` |
+| `$lte` | Less than or equal | `{ age: { $lte: 25 } }` |
+| `$in` | In array | `{ age: { $in: [25, 30, 35] } }` |
+| `$nin` | Not in array | `{ age: { $nin: [25, 30] } }` |
+
+**Examples:**
+```javascript
+// Users between 25 and 35
+db.users.find({ age: { $gte: 25, $lte: 35 } });
+
+// Users from specific cities
+db.users.find({ city: { $in: ["New York", "London", "Tokyo"] } });
+```
+
+---
+
+### Logical Operators
+
+**$and** - All conditions must be true
+```javascript
+db.users.find({
+  $and: [
+    { age: { $gt: 25 } },
+    { city: "New York" }
+  ]
+});
+
+// Simplified (implicit AND)
+db.users.find({ age: { $gt: 25 }, city: "New York" });
+```
+
+**$or** - At least one condition must be true
+```javascript
+db.users.find({
+  $or: [
+    { age: { $lt: 25 } },
+    { age: { $gt: 60 } }
+  ]
+});
+```
+
+**$not** - Inverts condition
+```javascript
+db.users.find({ age: { $not: { $gt: 25 } } });
+```
+
+**$nor** - None of the conditions should be true
+```javascript
+db.users.find({
+  $nor: [
+    { age: { $lt: 25 } },
+    { city: "New York" }
+  ]
+});
+```
+
+---
+
+### Element Operators
+
+**$exists** - Check if field exists
+```javascript
+// Find users with phone number
+db.users.find({ phone: { $exists: true } });
+
+// Find users without phone number
+db.users.find({ phone: { $exists: false } });
+```
+
+**$type** - Check field data type
+```javascript
+// Find documents where age is a number
+db.users.find({ age: { $type: "number" } });
+
+// Find documents where age is a string
+db.users.find({ age: { $type: "string" } });
+```
+
+---
+
+### Array Operators
+
+**$all** - Array contains all elements
+```javascript
+// Users with both "reading" and "coding" hobbies
+db.users.find({ hobbies: { $all: ["reading", "coding"] } });
+```
+
+**$elemMatch** - Array element matches all conditions
+```javascript
+db.products.find({
+  reviews: {
+    $elemMatch: { rating: { $gte: 4 }, verified: true }
+  }
+});
+```
+
+**$size** - Array has specific length
+```javascript
+// Users with exactly 3 hobbies
+db.users.find({ hobbies: { $size: 3 } });
+```
+
+---
+
+## 🔹 4️⃣ Update Operators
+
+### Field Update Operators
+
+**$set** - Set field value
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $set: { age: 31, city: "Boston" } }
+);
+```
+
+**$unset** - Remove field
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $unset: { phone: "" } }  // Removes phone field
+);
+```
+
+**$rename** - Rename field
+```javascript
+db.users.updateMany(
+  {},
+  { $rename: { "name": "fullName" } }
+);
+```
+
+**$inc** - Increment/decrement number
+```javascript
+// Increase age by 1
+db.users.updateOne(
+  { name: "John" },
+  { $inc: { age: 1 } }
+);
+
+// Decrease stock by 5
+db.products.updateOne(
+  { _id: 1 },
+  { $inc: { stock: -5 } }
+);
+```
+
+**$mul** - Multiply field value
+```javascript
+// Double the price
+db.products.updateOne(
+  { _id: 1 },
+  { $mul: { price: 2 } }
+);
+```
+
+**$min** - Update if new value is less
+```javascript
+db.products.updateOne(
+  { _id: 1 },
+  { $min: { price: 50 } }  // Only updates if current price > 50
+);
+```
+
+**$max** - Update if new value is greater
+```javascript
+db.products.updateOne(
+  { _id: 1 },
+  { $max: { price: 100 } }  // Only updates if current price < 100
+);
+```
+
+---
+
+### Array Update Operators
+
+**$push** - Add element to array
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $push: { hobbies: "swimming" } }
+);
+```
+
+**$pull** - Remove elements matching condition
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $pull: { hobbies: "gaming" } }
+);
+```
+
+**$pop** - Remove first or last element
+```javascript
+// Remove last element
+db.users.updateOne(
+  { name: "John" },
+  { $pop: { hobbies: 1 } }
+);
+
+// Remove first element
+db.users.updateOne(
+  { name: "John" },
+  { $pop: { hobbies: -1 } }
+);
+```
+
+**$addToSet** - Add element only if not exists (no duplicates)
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $addToSet: { hobbies: "reading" } }  // Won't add if already exists
+);
+```
+
+**$each** - Add multiple elements
+```javascript
+db.users.updateOne(
+  { name: "John" },
+  { $push: { hobbies: { $each: ["swimming", "hiking"] } } }
+);
+```
+
+---
+
+## 🔹 5️⃣ Indexing
+
+### What is an Index?
+
+Index in MongoDB is like a book index - helps find data quickly without scanning entire collection.
+
+**Benefits:**
+- ✅ Faster queries (especially with large datasets)
+- ✅ Efficient sorting
+- ✅ Supports unique constraints
+
+**Trade-offs:**
+- ❌ Slower writes (index must be updated)
+- ❌ Uses more storage
+
+---
+
+### Create Index
+
+**Single Field Index:**
+```javascript
+// Index on age field
+db.users.createIndex({ age: 1 });  // 1 = ascending, -1 = descending
+```
+
+**Compound Index (Multiple fields):**
+```javascript
+// Index on age and city
+db.users.createIndex({ age: 1, city: 1 });
+```
+
+**Unique Index:**
+```javascript
+// Ensure email is unique
+db.users.createIndex({ email: 1 }, { unique: true });
+```
+
+**Text Index (Full-text search):**
+```javascript
+db.articles.createIndex({ title: "text", content: "text" });
+
+// Search
+db.articles.find({ $text: { $search: "mongodb tutorial" } });
+```
+
+---
+
+### View Indexes
+
+```javascript
+// List all indexes on collection
+db.users.getIndexes();
+```
+
+---
+
+### Drop Index
+
+```javascript
+// Drop specific index
+db.users.dropIndex("age_1");
+
+// Drop all indexes except _id
+db.users.dropIndexes();
+```
+
+---
+
+### When to Use Indexes?
+
+**✅ Use indexes on:**
+- Fields frequently used in queries (`find`, `sort`)
+- Fields used in joins (`$lookup`)
+- Fields with high cardinality (many unique values)
+
+**❌ Avoid indexes on:**
+- Small collections (full scan is faster)
+- Fields that change frequently
+- Fields with low cardinality (e.g., boolean, gender)
+
+---
+
+### Explain Query Performance
+
+```javascript
+// Analyze query execution
+db.users.find({ age: { $gt: 25 } }).explain("executionStats");
+```
+
+**Key metrics:**
+- `totalDocsExamined`: Documents scanned
+- `executionTimeMillis`: Query time
+- `indexUsed`: Which index was used
+
+**Real-life analogy:**
+Like using a book's index vs reading every page to find a topic.
+
+---
+
+## 🔹 6️⃣ Aggregation Framework
+
+### What is Aggregation?
+
+Process data in stages (pipeline) to transform and analyze documents.
+
+> Think of it as an assembly line - data passes through multiple stages, each stage transforms it.
+
+**Aggregation Pipeline:**
+```javascript
+db.collection.aggregate([
+  { stage1 },
+  { stage2 },
+  { stage3 }
+]);
+```
+
+---
+
+### Common Aggregation Stages
+
+**$match** - Filter documents (like `find`)
+```javascript
+db.orders.aggregate([
+  { $match: { status: "completed" } }
+]);
+```
+
+**$group** - Group by field and calculate aggregates
+```javascript
+// Total sales by product
+db.orders.aggregate([
+  {
+    $group: {
+      _id: "$product",
+      totalSales: { $sum: "$amount" },
+      count: { $sum: 1 }
+    }
+  }
+]);
+```
+
+**$project** - Select/reshape fields
+```javascript
+db.users.aggregate([
+  {
+    $project: {
+      name: 1,
+      age: 1,
+      isAdult: { $gte: ["$age", 18] }
+    }
+  }
+]);
+```
+
+**$sort** - Sort documents
+```javascript
+db.users.aggregate([
+  { $sort: { age: -1 } }  // Sort by age descending
+]);
+```
+
+**$limit** - Limit number of documents
+```javascript
+db.users.aggregate([
+  { $sort: { age: -1 } },
+  { $limit: 10 }  // Top 10 oldest users
+]);
+```
+
+**$skip** - Skip documents (pagination)
+```javascript
+db.users.aggregate([
+  { $skip: 20 },
+  { $limit: 10 }  // Page 3 (skip 20, show next 10)
+]);
+```
+
+**$lookup** - Join with another collection
+```javascript
+// Join orders with users
+db.orders.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "userId",
+      foreignField: "_id",
+      as: "userDetails"
+    }
+  }
+]);
+```
+
+**$unwind** - Deconstruct array field
+```javascript
+// Expand hobbies array
+db.users.aggregate([
+  { $unwind: "$hobbies" }
+]);
+
+// Before: { name: "John", hobbies: ["reading", "coding"] }
+// After:  { name: "John", hobbies: "reading" }
+//         { name: "John", hobbies: "coding" }
+```
+
+---
+
+### Aggregation Examples
+
+**Example 1: Average salary by department**
+```javascript
+db.employees.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      avgSalary: { $avg: "$salary" },
+      count: { $sum: 1 }
+    }
+  },
+  { $sort: { avgSalary: -1 } }
+]);
+```
+
+**Example 2: Top 5 products by sales**
+```javascript
+db.orders.aggregate([
+  { $match: { status: "completed" } },
+  {
+    $group: {
+      _id: "$productId",
+      totalSales: { $sum: "$amount" }
+    }
+  },
+  { $sort: { totalSales: -1 } },
+  { $limit: 5 }
+]);
+```
+
+**Example 3: Users by age group**
+```javascript
+db.users.aggregate([
+  {
+    $bucket: {
+      groupBy: "$age",
+      boundaries: [0, 18, 30, 50, 100],
+      default: "Other",
+      output: {
+        count: { $sum: 1 },
+        users: { $push: "$name" }
+      }
+    }
+  }
+]);
+```
+
+---
+
+## 🔹 7️⃣ Data Modeling
+
+### Embedding vs Referencing
+
+**Embedding (Denormalized):**
+Store related data in same document.
+
+```javascript
+// User with embedded address
+{
+  _id: 1,
+  name: "John",
+  address: {
+    street: "123 Main St",
+    city: "New York",
+    zip: "10001"
+  }
+}
+```
+
+**Benefits:**
+- ✅ Single query to get all data
+- ✅ Better performance (no joins)
+- ✅ Atomic updates
+
+**Use when:**
+- One-to-one relationships
+- One-to-few relationships
+- Data accessed together
+
+---
+
+**Referencing (Normalized):**
+Store reference to another document.
+
+```javascript
+// User
+{
+  _id: 1,
+  name: "John",
+  addressId: 100
+}
+
+// Address (separate collection)
+{
+  _id: 100,
+  street: "123 Main St",
+  city: "New York"
+}
+```
+
+**Benefits:**
+- ✅ No data duplication
+- ✅ Smaller documents
+- ✅ Better for many-to-many relationships
+
+**Use when:**
+- One-to-many relationships (many side is large)
+- Many-to-many relationships
+- Data accessed independently
+
+---
+
+### One-to-One Relationship
+
+**Embed when:**
+- Data always accessed together
+- Small related data
+
+```javascript
+{
+  _id: 1,
+  name: "John",
+  profile: {
+    bio: "Software engineer",
+    avatar: "avatar.jpg"
+  }
+}
+```
+
+---
+
+### One-to-Many Relationship
+
+**Embed when few (< 100):**
+```javascript
+// Blog post with comments
+{
+  _id: 1,
+  title: "MongoDB Tutorial",
+  comments: [
+    { user: "Alice", text: "Great post!" },
+    { user: "Bob", text: "Thanks!" }
+  ]
+}
+```
+
+**Reference when many:**
+```javascript
+// User
+{ _id: 1, name: "John" }
+
+// Orders (separate collection)
+{ _id: 101, userId: 1, product: "Laptop", amount: 1000 }
+{ _id: 102, userId: 1, product: "Mouse", amount: 20 }
+```
+
+---
+
+### Many-to-Many Relationship
+
+**Use references:**
+```javascript
+// Students
+{ _id: 1, name: "Alice", courseIds: [101, 102] }
+{ _id: 2, name: "Bob", courseIds: [101, 103] }
+
+// Courses
+{ _id: 101, name: "Math", studentIds: [1, 2] }
+{ _id: 102, name: "Physics", studentIds: [1] }
+```
+
+---
+
+### Schema Design Patterns
+
+**Pattern 1: Attribute Pattern**
+Store variable attributes as array of key-value pairs.
+
+```javascript
+// Instead of: { color: "red", size: "L", material: "cotton" }
+{
+  _id: 1,
+  name: "T-Shirt",
+  attributes: [
+    { k: "color", v: "red" },
+    { k: "size", v: "L" },
+    { k: "material", v: "cotton" }
+  ]
+}
+```
+
+**Pattern 2: Bucket Pattern**
+Group time-series data into buckets.
+
+```javascript
+// Instead of one document per measurement
+{
+  sensorId: 123,
+  date: "2024-01-15",
+  measurements: [
+    { time: "00:00", temp: 20 },
+    { time: "01:00", temp: 19 },
+    { time: "02:00", temp: 18 }
+  ]
+}
+```
+
+---
+
+## 🔹 8️⃣ Transactions
+
+### What are Transactions?
+
+Group of operations that execute together (all succeed or all fail).
+
+**ACID in MongoDB:**
+- **Atomicity**: All operations succeed or all fail
+- **Consistency**: Data remains valid
+- **Isolation**: Transactions don't interfere
+- **Durability**: Committed changes persist
+
+---
+
+### Multi-Document Transactions
+
+```javascript
+const session = db.getMongo().startSession();
+
+session.startTransaction();
+
+try {
+  // Deduct from account A
+  db.accounts.updateOne(
+    { _id: "A" },
+    { $inc: { balance: -100 } },
+    { session }
+  );
+  
+  // Add to account B
+  db.accounts.updateOne(
+    { _id: "B" },
+    { $inc: { balance: 100 } },
+    { session }
+  );
+  
+  session.commitTransaction();
+} catch (error) {
+  session.abortTransaction();
+} finally {
+  session.endSession();
+}
+```
+
+**Real-life analogy:**
+Like a bank transfer - money leaves one account and enters another, or neither happens.
+
+---
+
+### When to Use Transactions?
+
+**✅ Use transactions for:**
+- Financial operations (transfers, payments)
+- Multi-document updates that must be atomic
+- Operations across multiple collections
+
+**❌ Avoid transactions when:**
+- Single document updates (already atomic)
+- Performance is critical (transactions add overhead)
+- Can use embedded documents instead
+
+---
+
+## 🔹 9️⃣ Replication & Sharding
+
+### Replication (High Availability)
+
+**Replica Set:**
+Group of MongoDB instances that maintain same data.
+
+```
+Primary (Read/Write)
+    ↓ replicate
+Secondary (Read only)
+Secondary (Read only)
+```
+
+**Benefits:**
+- ✅ High availability (automatic failover)
+- ✅ Data redundancy
+- ✅ Read scaling (read from secondaries)
+
+**How it works:**
+1. Primary receives all writes
+2. Changes replicated to secondaries
+3. If primary fails, secondary becomes primary
+
+---
+
+### Sharding (Horizontal Scaling)
+
+**What is sharding?**
+Distributing data across multiple servers.
+
+```
+App → Mongos (Router)
+        ↓
+    Shard 1 (users 1-1000)
+    Shard 2 (users 1001-2000)
+    Shard 3 (users 2001-3000)
+```
+
+**Benefits:**
+- ✅ Handle massive datasets
+- ✅ Distribute load across servers
+- ✅ Scale horizontally
+
+**Shard Key:**
+Field used to distribute documents.
+
+```javascript
+// Shard collection by userId
+sh.shardCollection("mydb.users", { userId: 1 });
+```
+
+**Choosing shard key:**
+- ✅ High cardinality (many unique values)
+- ✅ Evenly distributed
+- ✅ Frequently used in queries
+
+---
+
+## 🔹 🔟 MongoDB Interview Questions
+
+### Basic Questions
+
+**1. What is MongoDB?**
+> "MongoDB is a NoSQL document database that stores data in flexible JSON-like documents. It's designed for scalability, high performance, and flexible schemas."
+
+**2. SQL vs MongoDB?**
+> "SQL uses tables with fixed schemas and ACID transactions. MongoDB uses flexible documents, scales horizontally, and is better for unstructured data and rapid development."
+
+**3. What is BSON?**
+> "BSON is Binary JSON - MongoDB's internal format. It's faster to parse than JSON and supports additional data types like Date and ObjectId."
+
+**4. Explain ObjectId.**
+> "ObjectId is a 12-byte unique identifier automatically generated for each document. It contains timestamp, machine ID, and counter, making it globally unique."
+
+**5. Embedding vs Referencing?**
+> "Embedding stores related data in same document (faster reads, no joins). Referencing stores data separately (less duplication, better for large related data)."
+
+---
+
+### Intermediate Questions
+
+**1. How does indexing work in MongoDB?**
+> "Indexes create data structures (B-trees) that speed up queries. They're essential for large collections but slow down writes. Create indexes on frequently queried fields."
+
+**2. Explain aggregation pipeline.**
+> "Aggregation pipeline processes documents through stages like $match (filter), $group (aggregate), $sort (order). Each stage transforms data for the next stage."
+
+**3. What are replica sets?**
+> "Replica sets are groups of MongoDB instances maintaining same data. Primary handles writes, secondaries replicate data. Provides high availability and automatic failover."
+
+**4. When to use transactions?**
+> "Use transactions for multi-document operations that must be atomic, like financial transfers. Single document updates are already atomic and don't need transactions."
+
+**5. How to optimize slow queries?**
+> "Use indexes on query fields, use explain() to analyze performance, avoid large result sets, use projection to limit fields, consider sharding for massive datasets."
+
+---
+
+### Advanced Questions
+
+**1. Explain sharding strategy.**
+> "Sharding distributes data across servers using a shard key. Choose keys with high cardinality and even distribution. Avoid keys that cause hotspots (like timestamps)."
+
+**2. How to handle schema changes?**
+> "MongoDB's flexible schema allows gradual migrations. Use $set to add fields, application code handles multiple schema versions, migrate data in batches."
+
+**3. Write concern vs Read concern?**
+> "Write concern controls acknowledgment level (how many replicas must confirm write). Read concern controls data freshness (read from primary vs secondaries)."
+
+**4. How to model many-to-many relationships?**
+> "Store array of references in both collections, or create junction collection. For small datasets, embed arrays. For large datasets, use references."
+
+**5. Explain covered queries.**
+> "Covered query is satisfied entirely by index (no document lookup). All queried fields must be in index. Much faster than regular queries."
+
+---
+
+### Scenario-Based Questions
+
+**1. Find duplicate emails:**
+```javascript
+db.users.aggregate([
+  { $group: { _id: "$email", count: { $sum: 1 } } },
+  { $match: { count: { $gt: 1 } } }
+]);
+```
+
+**2. Find second highest salary:**
+```javascript
+db.employees.find().sort({ salary: -1 }).skip(1).limit(1);
+```
+
+**3. Update nested array element:**
+```javascript
+db.users.updateOne(
+  { _id: 1, "hobbies.name": "reading" },
+  { $set: { "hobbies.$.level": "advanced" } }
+);
+```
+
+**4. Count documents by category:**
+```javascript
+db.products.aggregate([
+  { $group: { _id: "$category", count: { $sum: 1 } } },
+  { $sort: { count: -1 } }
+]);
+```
+
+**5. Find users without orders:**
+```javascript
+db.users.aggregate([
+  {
+    $lookup: {
+      from: "orders",
+      localField: "_id",
+      foreignField: "userId",
+      as: "orders"
+    }
+  },
+  { $match: { orders: { $size: 0 } } }
+]);
+```
+
+---
+
+## 🔹 1️⃣1️⃣ Best Practices
+
+### Schema Design
+
+- ✅ **Embed when data accessed together** (one-to-few)
+- ✅ **Reference when data accessed independently** (one-to-many)
+- ✅ **Avoid deep nesting** (max 2-3 levels)
+- ✅ **Design for your queries** (optimize for read patterns)
+- ❌ **Don't normalize like SQL** (embrace denormalization)
+
+---
+
+### Indexing
+
+- ✅ **Index frequently queried fields**
+- ✅ **Use compound indexes** for multi-field queries
+- ✅ **Monitor index usage** with explain()
+- ✅ **Remove unused indexes**
+- ❌ **Don't over-index** (slows writes)
+
+---
+
+### Performance
+
+- ✅ **Use projection** to limit returned fields
+- ✅ **Use limit()** for large result sets
+- ✅ **Use aggregation** instead of multiple queries
+- ✅ **Enable profiler** to find slow queries
+- ❌ **Avoid large documents** (> 16MB limit)
+
+---
+
+### Security
+
+- ✅ **Enable authentication** (never run without auth)
+- ✅ **Use role-based access control**
+- ✅ **Encrypt data at rest and in transit**
+- ✅ **Validate input** to prevent injection
+- ❌ **Don't expose MongoDB to internet** (use firewall)
+
+---
+
+## 🎯 MongoDB vs SQL Quick Reference
+
+| Feature | MongoDB | SQL |
+|---------|---------|-----|
+| **Data Model** | Documents (JSON) | Tables (rows/columns) |
+| **Schema** | Flexible | Fixed |
+| **Relationships** | Embedding/Referencing | Foreign keys |
+| **Scaling** | Horizontal (sharding) | Vertical (bigger server) |
+| **Transactions** | Multi-document (4.0+) | ACID by default |
+| **Query Language** | MongoDB Query Language | SQL |
+| **Joins** | $lookup (limited) | JOIN (powerful) |
+| **Use Case** | Flexible data, high scale | Complex relationships, ACID |
+
+---
+
+## 📚 Study Tips for MongoDB
+
+1. **Practice CRUD operations**: Master insert, find, update, delete
+2. **Learn aggregation pipeline**: Most interview questions use aggregation
+3. **Understand indexing**: Know when to use and how to optimize
+4. **Master data modeling**: Embedding vs referencing decisions
+5. **Practice scenarios**: Duplicates, second highest, joins, grouping
+6. **Know trade-offs**: Flexibility vs consistency, performance vs storage
+7. **Understand replication & sharding**: Essential for production systems
+8. **Use MongoDB Atlas**: Free tier for practice
+
+---
+
+## 🚀 Conclusion
+
+You now have a complete MongoDB guide covering:
+- ✅ Core concepts with real-life analogies
+- ✅ CRUD operations and query operators
+- ✅ Indexing and performance optimization
+- ✅ Aggregation framework
+- ✅ Data modeling patterns
+- ✅ Transactions, replication, sharding
+- ✅ Interview questions and best practices
+
+**Remember:**
+> "MongoDB is about flexibility and scale. Design your schema for your queries, embrace denormalization, and use indexes wisely."
+
+Good luck with your MongoDB interviews! 🚀
