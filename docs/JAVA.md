@@ -3,27 +3,27 @@
 ## Table of Contents
 
 ### Core Java Levels
-- [Level 1: Fundamentals](#📗-level-1-fundamentals)
-- [Level 2: Object-Oriented Programming](#📘-level-2-object-oriented-programming)
-- [Level 3: Core APIs](#📙-level-3-core-apis)
-- [Level 4: Collections Framework](#📕-level-4-collections-framework)
-- [Level 5: Multithreading & Concurrency](#📕-level-5-multithreading--concurrency)
-- [Level 6: SOLID Principles](#📕-level-6-solid-principles)
-- [Level 7: Design Patterns](#📕-level-7-design-patterns)
-- [Level 8: Spring Framework](#📕-level-8-spring-framework)
-- [Level 9: Annotations](#📕-level-9-annotations)
+- [Level 1: Fundamentals](#level-1-fundamentals)
+- [Level 2: Object-Oriented Programming](#level-2-object-oriented-programming)
+- [Level 3: Core APIs](#level-3-core-apis)
+- [Level 4: Collections Framework](#level-4-collections-framework)
+- [Level 5: Multithreading & Concurrency](#level-5-multithreading--concurrency)
+- [Level 6: SOLID Principles](#level-6-solid-principles)
+- [Level 7: Design Patterns](#level-7-design-patterns)
+- [Level 8: Spring Framework](#level-8-spring-framework)
+- [Level 9: Annotations](#level-9-annotations)
 
 ### Collections Framework
-- [Performance Comparison](#📊-performance-comparison)
-- [Key Takeaways](#🎯-key-takeaways)
-- [Interview Tips](#🚀-interview-tips)
-- [Collection Trade-offs Decision Guide](#🎯-collection-trade-offs-decision-guide)
+- [Performance Comparison](#performance-comparison)
+- [Key Takeaways](#key-takeaways)
+- [Interview Tips](#interview-tips)
+- [Collection Trade-offs Decision Guide](#collection-trade-offs-decision-guide)
 
 ### Design Patterns
 - [Creational Patterns](#creational-patterns) (Singleton, Factory, Builder)
 - [Structural Patterns](#structural-patterns) (Adapter, Decorator, Facade)
 - [Behavioral Patterns](#behavioral-patterns) (Observer, Strategy, Command, Template)
-- [Design Patterns Comparison](#📊-design-patterns-comparison)
+- [Design Patterns Comparison](#design-patterns-comparison)
 - [Pattern Selection Guide](#🎓-pattern-selection-guide)
 
 ### Spring Framework
@@ -50,7 +50,7 @@
 
 ---
 
-## 📗 LEVEL 1: FUNDAMENTALS
+## LEVEL 1: FUNDAMENTALS
 
 ### 1. Data Types & Variables
 
@@ -558,7 +558,7 @@ public class RecursionExample {
 
 ---
 
-## 📘 LEVEL 2: OBJECT-ORIENTED PROGRAMMING
+## LEVEL 2: OBJECT-ORIENTED PROGRAMMING
 
 ### 1. Classes & Objects
 
@@ -1263,7 +1263,7 @@ public class BankAccount {
 
 ---
 
-## 📙 LEVEL 3: CORE APIS
+## LEVEL 3: CORE APIS
 
 ### 1. String Handling
 
@@ -1903,7 +1903,7 @@ System.out.println(list1.getClass() == list2.getClass());  // true
 
 ---
 
-## 📕 LEVEL 4: COLLECTIONS FRAMEWORK
+## LEVEL 4: COLLECTIONS FRAMEWORK
 
 **What is Collections Framework?**  
 A set of classes and interfaces that implement commonly reusable data structures.
@@ -3074,7 +3074,7 @@ public class CopyOnWriteExample {
 
 ---
 
-## 📊 Performance Comparison
+## Performance Comparison
 
 ### Time Complexity Summary
 
@@ -3115,7 +3115,7 @@ public class CopyOnWriteExample {
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 1. **Hashing**: O(1) average, needs good `hashCode()`
 2. **Trees**: O(log n), needs comparable elements
@@ -3126,7 +3126,7 @@ public class CopyOnWriteExample {
 
 ---
 
-## 🚀 Interview Tips
+## Interview Tips
 
 **1. ArrayList vs LinkedList?**
 > "ArrayList uses dynamic array (fast random access O(1), slow insertion O(n)). LinkedList uses doubly linked list (slow access O(n), fast insertion at ends O(1)). Use ArrayList for random access, LinkedList for frequent insertions."
@@ -3145,7 +3145,7 @@ public class CopyOnWriteExample {
 
 ---
 
-## 🎯 Collection Trade-offs Decision Guide
+## Collection Trade-offs Decision Guide
 
 ### Quick Decision Tree
 
@@ -3172,7 +3172,7 @@ public class CopyOnWriteExample {
 - ✅ Yes → **ArrayDeque** (best choice)
 ---
 
-## 📕 LEVEL 5: MULTITHREADING & CONCURRENCY
+## LEVEL 5: MULTITHREADING & CONCURRENCY
 
 ### 🧵 Thread Basics
 
@@ -3548,7 +3548,7 @@ new Thread(() -> {
 
 ---
 
-## 📕 LEVEL 6: SOLID PRINCIPLES
+## LEVEL 6: SOLID PRINCIPLES
 
 ### 🎯 What are SOLID Principles?
 
@@ -4067,7 +4067,7 @@ class CheckoutService {
 
 ---
 
-## 📕 LEVEL 7: DESIGN PATTERNS
+## LEVEL 7: DESIGN PATTERNS
 
 ### 🎯 What are Design Patterns?
 
@@ -5052,7 +5052,7 @@ xmlProcessor.process();
 
 ---
 
-## 📊 Design Patterns Comparison
+## Design Patterns Comparison
 
 ### Quick Reference Table
 
@@ -5165,7 +5165,7 @@ xmlProcessor.process();
 
 ---
 
-# 📕 LEVEL 8: SPRING FRAMEWORK
+## LEVEL 8: SPRING FRAMEWORK
 
 ## Spring Core Concepts
 
@@ -7017,7 +7017,7 @@ public class ProductController {
 
 ---
 
-# 📕 LEVEL 9: ANNOTATIONS
+## LEVEL 9: ANNOTATIONS
 
 ## How Annotations Work
 
@@ -8150,7 +8150,7 @@ info.app.version=1.0.0
 
 ---
 
-## 🎯 Key Takeaways
+## Key Takeaways
 
 ### Spring Framework:
 1. **DI/IoC** - Spring manages object lifecycle
