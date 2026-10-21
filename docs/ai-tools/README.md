@@ -9,3 +9,4 @@
 ## Concepts
 
 - [AI AGENTS](ai-agents.md) - How agents work end to end: planning, tool use, reflection, ReAct vs ReWOO, the five agent types, risks and best practices
+- [AI EVALS](ai-evals.md) - All 8 lessons of the AI Evals course by week: Three Gulfs, error analysis, LLM-as-Judge alignment and bias correction, RAG and agent evals, CI/CD, review UIs, cost and model cascades
